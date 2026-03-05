@@ -9,7 +9,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### Cameron Yeo
+### Yeo Eng Hao, Cameron
 
 <img src="images/camyeo.png" width="200px">
 
