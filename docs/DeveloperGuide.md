@@ -261,14 +261,13 @@ _{Explain here how the data archiving feature will be implemented}_
 ### Product scope
 
 **Target user profile**:
+* is a teacher who manages contact details of many students and their parents
+* needs quick access to student and parent contact information during lessons, meetings, or emergencies
+* prefers desktop applications over mobile apps or web portals
+* is comfortable using command-line interfaces
+* can type quickly and prefers keyboard-based interactions over mouse-driven workflows
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
-
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: TeacherBook CLI allows teachers to manage and retrieve student and parent contact information faster than traditional spreadsheet or GUI-based tools by using simple command-line commands optimised for speed and efficiency.
 
 
 ### User stories
