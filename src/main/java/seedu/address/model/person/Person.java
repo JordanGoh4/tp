@@ -23,18 +23,30 @@ public class Person {
 
     // Data fields
     private final Address address;
+    private final StudentClass studentClass;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
+     * {@code studentClass} can be null (e.g. for parents or unassigned students).
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, StudentClass studentClass, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.studentClass = studentClass;
         this.tags.addAll(tags);
+    }
+
+    /**
+     * Constructor for backward compatibility - creates a Person without a class (class = null).
+     * @deprecated Use {@link #Person(Name, Phone, Email, Address, StudentClass, Set)} instead.
+     */
+    @Deprecated
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        this(name, phone, email, address, null, tags);
     }
 
     public Name getName() {
@@ -54,7 +66,14 @@ public class Person {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * Returns the person's class. May be null if not set.
+     */
+    public StudentClass getStudentClass() {
+        return studentClass;
+    }
+
+    /**
+     * Returns the immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
@@ -94,13 +113,14 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
+                && Objects.equals(studentClass, otherPerson.studentClass)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, address, studentClass, tags);
     }
 
     @Override
@@ -110,6 +130,7 @@ public class Person {
                 .add("phone", phone)
                 .add("email", email)
                 .add("address", address)
+                .add("studentClass", studentClass)
                 .add("tags", tags)
                 .toString();
     }
