@@ -9,7 +9,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### Cameron Yeo
+### Yeo Eng Hao, Cameron
 
 <img src="images/camyeo.png" width="200px">
 
@@ -24,7 +24,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](https://github.com/JordanGoh4)]
 
-* Role: Team Lead
+* Role: Team Member
 * Responsibilities: UI
 
 ### Wang Junwei
@@ -45,12 +45,11 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: 
 
-### James Doe
+### Wu Xuande
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/xdewu0508.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/xdewu0508)]
 
 * Role: Developer
 * Responsibilities: UI
