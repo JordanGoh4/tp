@@ -47,6 +47,10 @@ public class Messages {
             builder.append("; Class: ")
                     .append(person.getStudentClass());
         }
+        if (!person.getRemark().isEmpty()) {
+            builder.append("; Remark: ")
+                    .append(person.getRemark());
+        }
         builder.append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();
