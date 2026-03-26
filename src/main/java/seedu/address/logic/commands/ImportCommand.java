@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -20,6 +21,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.StudentClass;
 import seedu.address.model.tag.Tag;
+import seedu.address.commons.util.ToStringBuilder;
 
 /**
  * Imports persons from a CSV file.
@@ -200,6 +202,32 @@ public class ImportCommand extends Command {
             return line.substring(1);
         }
         return line;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof ImportCommand)) {
+            return false;
+        }
+
+        ImportCommand otherImportCommand = (ImportCommand) other;
+        return csvPath.equals(otherImportCommand.csvPath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(csvPath);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("csvPath", csvPath)
+                .toString();
     }
 }
 

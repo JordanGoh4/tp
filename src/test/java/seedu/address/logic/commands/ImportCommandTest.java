@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,6 +81,76 @@ public class ImportCommandTest {
         }
 
         throw new AssertionError("Expected CommandException to be thrown.");
+    }
+
+    @Test
+    public void execute_unclosedQuotes_skipsRowWithReason() throws Exception {
+        Path csvFile = tempDir.resolve("unclosed_quotes.csv");
+        Files.write(csvFile, List.of(
+                "name,phone,email,address,class,tags",
+                "Jordan Goh,12345678,test@gmail.com,\"Blk 357 Ch,3A,friends"
+        ));
+
+        ImportCommand command = new ImportCommand(csvFile);
+        CommandResult result = command.execute(model);
+
+        String feedback = result.getFeedbackToUser();
+        assertTrue(feedback.contains("Import finished. Imported: 0, duplicates skipped: 0, invalid rows skipped: 1."));
+        assertTrue(feedback.contains("Row 2 skipped: Unclosed quotes in CSV line"));
+    }
+
+    @Test
+    public void execute_invalidColumnCount_skipsRowWithReason() throws Exception {
+        Path csvFile = tempDir.resolve("invalid_columns.csv");
+        Files.write(csvFile, List.of(
+                // Only 3 columns: name,phone,email
+                "Bad Row,12,bad@example.com"
+        ));
+
+        ImportCommand command = new ImportCommand(csvFile);
+        CommandResult result = command.execute(model);
+
+        String feedback = result.getFeedbackToUser();
+        assertTrue(feedback.contains("Import finished. Imported: 0, duplicates skipped: 0, invalid rows skipped: 1."));
+        assertTrue(feedback.contains("Row 1 skipped: Invalid CSV column count"));
+    }
+
+    @Test
+    public void execute_utf8BomInFirstCell_stripsBomAndImports() throws Exception {
+        Path csvFile = tempDir.resolve("bom.csv");
+        String bomName = "\uFEFFJordan Goh";
+        Files.write(csvFile, List.of(
+                bomName + ",12345678,test@gmail.com,Blk 357 Ch,3A,friends"
+        ));
+
+        ImportCommand command = new ImportCommand(csvFile);
+        CommandResult result = command.execute(model);
+
+        assertTrue(result.getFeedbackToUser().startsWith("Import finished. Imported: 1, duplicates skipped: 0, invalid rows skipped: 0."));
+        assertTrue(model.getFilteredPersonList().stream().anyMatch(p -> p.getName().fullName.equals("Jordan Goh")));
+    }
+
+    @Test
+    public void execute_manyInvalidRows_onlyFirstTenDetailsIncluded() throws Exception {
+        Path csvFile = tempDir.resolve("many_invalid.csv");
+        // header + 11 invalid rows -> details should only include 10 rows (MAX_SKIP_DETAILS)
+        List<String> lines = new java.util.ArrayList<>();
+        lines.add("name,phone,email,address,class,tags");
+        for (int i = 0; i < 11; i++) {
+            lines.add("Bad " + i + " Person,12,bad" + i + "@example.com,Blk " + i + " Street,3A");
+        }
+        Files.write(csvFile, lines);
+
+        ImportCommand command = new ImportCommand(csvFile);
+        CommandResult result = command.execute(model);
+
+        String feedback = result.getFeedbackToUser();
+        assertTrue(feedback.contains("Import finished. Imported: 0, duplicates skipped: 0, invalid rows skipped: 11."));
+        assertTrue(feedback.contains("Details:"));
+
+        int rowOccurrences = feedback.split("Row ").length - 1;
+        assertEquals(10, rowOccurrences);
+        assertTrue(Pattern.compile("Row 12 skipped:").matcher(feedback).find() == false);
     }
 }
 
