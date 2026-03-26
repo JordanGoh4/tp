@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import seedu.address.model.Model;
 import seedu.address.ui.HelpWindow;
+
 /**
  * Shows help. With no args, opens the help window. With a command word,
  * returns the usage for that command inline.
@@ -29,6 +30,9 @@ public class HelpCommand extends Command {
             "add    " + AddCommand.MESSAGE_USAGE,
             "edit   " + EditCommand.MESSAGE_USAGE,
             "delete " + DeleteCommand.MESSAGE_USAGE,
+            "flag   " + FlagCommand.MESSAGE_USAGE,
+            "unflag " + UnflagCommand.MESSAGE_USAGE,
+            "dashboard " + DashboardCommand.MESSAGE_USAGE,
             "find   " + FindCommand.MESSAGE_USAGE,
             "list   " + ListCommand.MESSAGE_USAGE,
             "clear  " + ClearCommand.MESSAGE_USAGE,
@@ -42,6 +46,9 @@ public class HelpCommand extends Command {
             Map.entry(AddCommand.COMMAND_WORD, AddCommand.MESSAGE_USAGE),
             Map.entry(EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE),
             Map.entry(DeleteCommand.COMMAND_WORD, DeleteCommand.MESSAGE_USAGE),
+            Map.entry(FlagCommand.COMMAND_WORD, FlagCommand.MESSAGE_USAGE),
+            Map.entry(UnflagCommand.COMMAND_WORD, UnflagCommand.MESSAGE_USAGE),
+            Map.entry(DashboardCommand.COMMAND_WORD, DashboardCommand.MESSAGE_USAGE),
             Map.entry(FindCommand.COMMAND_WORD, FindCommand.MESSAGE_USAGE),
             Map.entry(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_USAGE),
             Map.entry(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_USAGE),

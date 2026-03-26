@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Flag;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -30,6 +31,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String address;
     private final String studentClass;
+    private final String flag;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -38,12 +40,14 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("class") String studentClass, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("class") String studentClass, @JsonProperty("flag") String flag,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.studentClass = studentClass;
+        this.flag = flag;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -58,6 +62,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         address = source.getAddress().value;
         studentClass = source.getStudentClass() != null ? source.getStudentClass().value : null;
+        flag = source.getFlag() != null ? source.getFlag().value : null;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -114,8 +119,16 @@ class JsonAdaptedPerson {
             modelStudentClass = new StudentClass(studentClass.trim());
         }
 
+        Flag modelFlag = null;
+        if (flag != null && !flag.isBlank()) {
+            if (!Flag.isValidFlagReason(flag.trim())) {
+                throw new IllegalValueException(Flag.MESSAGE_CONSTRAINTS);
+            }
+            modelFlag = new Flag(flag.trim());
+        }
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStudentClass, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStudentClass, modelFlag, modelTags);
     }
 
 }

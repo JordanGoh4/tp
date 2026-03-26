@@ -132,6 +132,15 @@
     -fx-text-fill: #010504;
 }
 
+.flagged-indicator {
+    -fx-background-color: #b93c32;
+    -fx-background-radius: 10;
+    -fx-font-family: "Segoe UI Bold";
+    -fx-font-size: 10px;
+    -fx-padding: 2 8 2 8;
+    -fx-text-fill: white;
+}
+
 .stack-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }

@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REASON;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -38,6 +39,8 @@ public class CommandTestUtil {
     public static final String VALID_TAG_FRIEND = "friend";
     public static final String VALID_TAG_REP = "classRep";
     public static final String VALID_TAG_SUPPORT = "support";
+    public static final String VALID_FLAG_REASON_AMY = "Missing consent form for field trip";
+    public static final String VALID_FLAG_REASON_BOB = "Parent requested callback about grades";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -52,11 +55,14 @@ public class CommandTestUtil {
 
     public static final String TAG_DESC_REP = " " + PREFIX_TAG + VALID_TAG_REP;
     public static final String TAG_DESC_SUPPORT = " " + PREFIX_TAG + VALID_TAG_SUPPORT;
+    public static final String REASON_DESC_AMY = " " + PREFIX_REASON + VALID_FLAG_REASON_AMY;
+    public static final String REASON_DESC_BOB = " " + PREFIX_REASON + VALID_FLAG_REASON_BOB;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
+    public static final String INVALID_REASON_DESC = " " + PREFIX_REASON;
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";

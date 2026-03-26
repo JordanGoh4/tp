@@ -35,6 +35,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label studentClass;
     @FXML
+    private Label flagIndicator;
+    @FXML
     private Label phone;
     @FXML
     private Label address;
@@ -52,6 +54,10 @@ public class PersonCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         studentClass.setText(person.getStudentClass() != null ? person.getStudentClass().value : "-");
+        boolean isFlagged = person.getFlag() != null;
+        flagIndicator.setText(isFlagged ? "FLAGGED" : "");
+        flagIndicator.setManaged(isFlagged);
+        flagIndicator.setVisible(isFlagged);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
