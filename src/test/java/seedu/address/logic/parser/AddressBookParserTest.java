@@ -28,6 +28,7 @@ import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -127,6 +128,10 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_import() throws Exception {
+        assertTrue(parser.parseCommand(ImportCommand.COMMAND_WORD + " contacts.csv") instanceof ImportCommand);
+    }
+
     public void parseCommand_remark() throws Exception {
         Remark remark = new Remark("Allergic to peanuts");
         RemarkCommand command = (RemarkCommand) parser.parseCommand(
