@@ -111,13 +111,15 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         BENSON.getStudentClass().toString(), VALID_FLAG, VALID_TAGS);
-        assertEquals(new seedu.address.testutil.PersonBuilder(BENSON).withFlag(VALID_FLAG).build(), person.toModelType());
+        assertEquals(new seedu.address.testutil.PersonBuilder(BENSON).withFlag(VALID_FLAG).build(),
+                person.toModelType());
     }
 
     @Test
     public void toModelType_invalidFlag_throwsIllegalValueException() {
         JsonAdaptedPerson person =
-                new JsonAdaptedPerson(ALICE.getName().toString(), ALICE.getPhone().toString(), ALICE.getEmail().toString(),
+                new JsonAdaptedPerson(ALICE.getName().toString(), ALICE.getPhone().toString(),
+                        ALICE.getEmail().toString(),
                         ALICE.getAddress().toString(), ALICE.getStudentClass().toString(), INVALID_FLAG,
                         ALICE.getTags().stream().map(JsonAdaptedTag::new).collect(Collectors.toList()));
         assertThrows(IllegalValueException.class, Flag.MESSAGE_CONSTRAINTS, person::toModelType);

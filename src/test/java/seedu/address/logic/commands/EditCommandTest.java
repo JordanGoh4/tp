@@ -72,8 +72,9 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_flaggedPersonEdited_flagRetained_success() {
-        Person flaggedFirstPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+    public void execute_flaggedPersonEdited_success() {
+        Person flaggedFirstPerson =
+                new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withFlag(VALID_FLAG_REASON_AMY).build();
         model.setPerson(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()), flaggedFirstPerson);
 

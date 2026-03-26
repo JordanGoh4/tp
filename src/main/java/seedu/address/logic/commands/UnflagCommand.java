@@ -29,6 +29,9 @@ public class UnflagCommand extends Command {
 
     private final Index index;
 
+    /**
+     * @param index of the person in the filtered person list to unflag
+     */
     public UnflagCommand(Index index) {
         requireNonNull(index);
         this.index = index;
