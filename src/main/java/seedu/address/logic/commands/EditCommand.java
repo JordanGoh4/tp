@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_CLASS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -27,6 +28,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.StudentClass;
 import seedu.address.model.tag.Tag;
 
@@ -46,6 +48,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_CLASS + "CLASS] "
+            + "[" + PREFIX_REMARK + "REMARK] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -105,9 +108,13 @@ public class EditCommand extends Command {
         StudentClass updatedStudentClass = editPersonDescriptor.isStudentClassPresent()
                 ? editPersonDescriptor.getStudentClass().orElse(null)
                 : personToEdit.getStudentClass();
+        Remark updatedRemark = editPersonDescriptor.isRemarkPresent()
+                ? editPersonDescriptor.getRemark().orElse(Remark.EMPTY)
+                : personToEdit.getRemark();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedStudentClass, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedStudentClass,
+                updatedRemark, updatedTags);
     }
 
     @Override
@@ -145,6 +152,8 @@ public class EditCommand extends Command {
         private Address address;
         private StudentClass studentClass;
         private boolean studentClassPresent;
+        private Remark remark;
+        private boolean remarkPresent;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -160,6 +169,8 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             this.studentClass = toCopy.studentClass;
             this.studentClassPresent = toCopy.studentClassPresent;
+            this.remark = toCopy.remark;
+            this.remarkPresent = toCopy.remarkPresent;
             setTags(toCopy.tags);
         }
 
@@ -168,7 +179,8 @@ public class EditCommand extends Command {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, phone, email, address, tags)
-                    || studentClassPresent;
+                    || studentClassPresent
+                    || remarkPresent;
         }
 
         public void setName(Name name) {
@@ -219,6 +231,19 @@ public class EditCommand extends Command {
             return studentClassPresent;
         }
 
+        public void setRemark(Remark remark) {
+            this.remark = remark;
+            this.remarkPresent = true;
+        }
+
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
+        }
+
+        public boolean isRemarkPresent() {
+            return remarkPresent;
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -254,6 +279,8 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(studentClass, otherEditPersonDescriptor.studentClass)
                     && studentClassPresent == otherEditPersonDescriptor.studentClassPresent
+                    && Objects.equals(remark, otherEditPersonDescriptor.remark)
+                    && remarkPresent == otherEditPersonDescriptor.remarkPresent
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -265,6 +292,7 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("studentClass", studentClass)
+                    .add("remark", remark)
                     .add("tags", tags)
                     .toString();
         }

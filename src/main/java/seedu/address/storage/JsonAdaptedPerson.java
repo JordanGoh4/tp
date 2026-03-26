@@ -15,6 +15,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.StudentClass;
 import seedu.address.model.tag.Tag;
 
@@ -30,6 +31,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String address;
     private final String studentClass;
+    private final String remark;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -38,12 +40,14 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("class") String studentClass, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("class") String studentClass, @JsonProperty("remark") String remark,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.studentClass = studentClass;
+        this.remark = remark;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -58,6 +62,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         address = source.getAddress().value;
         studentClass = source.getStudentClass() != null ? source.getStudentClass().value : null;
+        remark = source.getRemark().isEmpty() ? null : source.getRemark().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -114,8 +119,16 @@ class JsonAdaptedPerson {
             modelStudentClass = new StudentClass(studentClass.trim());
         }
 
+        Remark modelRemark = Remark.EMPTY;
+        if (remark != null) {
+            if (!Remark.isValidRemark(remark)) {
+                throw new IllegalValueException(Remark.MESSAGE_CONSTRAINTS);
+            }
+            modelRemark = new Remark(remark);
+        }
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStudentClass, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStudentClass, modelRemark, modelTags);
     }
 
 }

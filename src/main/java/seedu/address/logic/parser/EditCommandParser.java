@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_CLASS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collection;
@@ -18,6 +19,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -34,7 +36,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_CLASS, PREFIX_TAG);
+                        PREFIX_CLASS, PREFIX_REMARK, PREFIX_TAG);
 
         Index index;
 
@@ -45,7 +47,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_CLASS);
+                PREFIX_CLASS, PREFIX_REMARK);
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
@@ -67,6 +69,14 @@ public class EditCommandParser implements Parser<EditCommand> {
                 editPersonDescriptor.setStudentClass(null);
             } else {
                 editPersonDescriptor.setStudentClass(ParserUtil.parseStudentClass(classValue));
+            }
+        }
+        if (argMultimap.getValue(PREFIX_REMARK).isPresent()) {
+            String remarkValue = argMultimap.getValue(PREFIX_REMARK).get();
+            if (remarkValue.isBlank()) {
+                editPersonDescriptor.setRemark(Remark.EMPTY);
+            } else {
+                editPersonDescriptor.setRemark(ParserUtil.parseRemark(remarkValue));
             }
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
