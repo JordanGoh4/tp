@@ -36,6 +36,10 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
    
    * `sort` : Sort all contacts in alphabetical order.
 
+   * `import C:\data\contacts.csv` : Imports contacts from a CSV file.
+
+   * `export C:\data\contacts.csv` : Exports all contacts to a CSV file.
+
    * `exit` : Exits the app.
 
 1. Refer to the [Features](#features) below for details of each command.
@@ -104,6 +108,43 @@ Format: `list`
 Shows a list of all persons in the address book in alphabetical order.
 
 Format: `sort`
+
+### Importing persons from CSV : `import`
+
+Imports persons from a CSV file.
+
+Format: `import FILE_PATH`
+
+CSV row format:
+`name,phone,email,address[,class][,tag1;tag2;...]`
+
+Notes:
+* The first row can be a header (e.g. `name,phone,email,address,class,tags`) and it will be ignored.
+* Rows with invalid data are skipped.
+* Duplicate persons (same name) are skipped.
+* Up to 10 skipped-row reasons are shown after import.
+* Addresses containing commas should be wrapped in double quotes.
+* Tags are optional and should be separated with semicolons (`;`).
+
+Examples:
+* `import C:\data\contacts.csv`
+* `import data\new_contacts.csv`
+
+### Exporting persons to CSV : `export`
+
+Exports all persons from the address book to a CSV file.
+
+Format: `export FILE_PATH`
+
+Notes:
+* The command writes a CSV header: `name,phone,email,address,class,tags`.
+* If needed, parent folders in the given path are created automatically.
+* Existing files at the same path will be overwritten.
+* Tags are exported as a semicolon-separated list.
+
+Examples:
+* `export C:\data\contacts.csv`
+* `export data\backup\contacts.csv`
 
 ### Editing a person : `edit`
 
@@ -233,6 +274,9 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
 **Filter** | `filter c/CLASS`<br> e.g., `filter c/3A`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Import** | `import FILE_PATH`<br> e.g., `import C:\data\contacts.csv`
+**Export** | `export FILE_PATH`<br> e.g., `export C:\data\contacts.csv`
 **Tag** | `tag INDEX t/TAG [t/MORE_TAGS]`<br> e.g., `tag 1 t/exco`
 **List** | `list`
+**Sort** | `sort`
 **Help** | `help`

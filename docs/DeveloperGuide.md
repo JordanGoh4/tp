@@ -243,6 +243,62 @@ _{more aspects and alternatives to be added}_
 
 _{Explain here how the data archiving feature will be implemented}_
 
+### Import/Export CSV feature
+
+#### Implementation
+
+The import/export feature is implemented in the `Logic` component using two commands:
+
+* `ImportCommand` + `ImportCommandParser`
+* `ExportCommand` + `ExportCommandParser`
+
+Both commands are routed in `AddressBookParser` and executed by `LogicManager`, after which the normal autosave pipeline persists the updated `AddressBook` state.
+
+**Import (`import FILE_PATH`)**
+
+* Reads the CSV file line by line.
+* Supports quoted CSV values (including commas in addresses).
+* Ignores a header row if the first cell is `name`.
+* Converts each row into a `Person` using existing parser utilities (`ParserUtil`) so field validation remains consistent with `add`.
+* Duplicate detection uses `Model#hasPerson`, which relies on identity (`Person#isSamePerson`), i.e. same name.
+* Invalid or duplicate rows are skipped and summarized in the command result.
+* Up to 10 row-level skip reasons are included to help users debug malformed input.
+* Strips UTF-8 BOM from the start of a line to handle CSVs exported from spreadsheet tools.
+
+**Export (`export FILE_PATH`)**
+
+* Serializes all persons from `model.getAddressBook().getPersonList()` into CSV.
+* Writes header `name,phone,email,address,class,tags`.
+* Escapes CSV values containing commas, quotes, or newlines.
+* Exports tags as a semicolon-separated list.
+* Creates parent directories if they do not exist.
+
+#### Design considerations
+
+* **Validation reuse:** import uses existing domain parsers instead of custom validators to avoid duplicated validation logic.
+* **Partial success behavior:** invalid rows are skipped while valid rows are imported, improving usability for large datasets with small data issues.
+* **User feedback:** row-level skip reasons are included for troubleshooting but capped for readability.
+
+#### Manual testing
+
+**Import**
+
+1. Run: `import C:\data\contacts.csv` with a valid file.
+   * Expected: valid rows are added and summary message shows imported count.
+2. Include invalid rows (e.g. invalid phone/email).
+   * Expected: rows are skipped with reasons in the result message.
+3. Include a duplicate name.
+   * Expected: duplicate row is skipped with a duplicate reason.
+
+**Export**
+
+1. Run: `export C:\data\out.csv`.
+   * Expected: CSV file is created with header and all current contacts.
+2. Export to a nested non-existing folder.
+   * Expected: directories are created and export succeeds.
+3. Export to an invalid/inaccessible path.
+   * Expected: command fails with a file write error message.
+
 
 --------------------------------------------------------------------------------------------------------------------
 
