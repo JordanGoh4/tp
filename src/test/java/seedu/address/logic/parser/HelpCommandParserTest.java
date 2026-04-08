@@ -25,6 +25,12 @@ public class HelpCommandParserTest {
     }
 
     @Test
+    public void parse_missingPreviouslyOmittedCommand_returnsTargetedHelp() throws Exception {
+        HelpCommand command = parser.parse("filter");
+        assertEquals(new HelpCommand("filter"), command);
+    }
+
+    @Test
     public void parse_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, () -> parser.parse("unknownCmd"));
     }
