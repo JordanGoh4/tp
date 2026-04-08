@@ -199,11 +199,11 @@ Examples:
 
 Adds one or more specified tags to a given person.
 
-Format: `tag INDEX \t[TAG] [t/MORE_TAGS]…`
+Format: `tag INDEX t/TAG [t/MORE_TAGS]…`
 
 Examples:
-* `tag 2 t\support` Adds the tag `support` to the 2nd person's existing tags.
-* `tag 5 t\exco t\hons` Adds the tags `exco` and `hons` to the 5th person's existing tags.
+* `tag 2 t/support` Adds the tag `support` to the 2nd person's existing tags.
+* `tag 5 t/exco t/hons` Adds the tags `exco` and `hons` to the 5th person's existing tags.
 
 ### Deleting a person : `delete`
 
