@@ -117,6 +117,21 @@ public class ImportCommandTest {
     }
 
     @Test
+    public void execute_phoneNotEightDigits_skipsRowWithReason() throws Exception {
+        Path csvFile = tempDir.resolve("invalid_phone_length.csv");
+        Files.write(csvFile, List.of(
+                "Short Phone,1234567,short@example.com,Somewhere,3A,friends"
+        ));
+
+        ImportCommand command = new ImportCommand(csvFile);
+        CommandResult result = command.execute(model);
+
+        String feedback = result.getFeedbackToUser();
+        assertTrue(feedback.contains("Import finished. Imported: 0, duplicates skipped: 0, invalid rows skipped: 1."));
+        assertTrue(feedback.contains(ImportCommand.MESSAGE_IMPORT_PHONE_CONSTRAINTS));
+    }
+
+    @Test
     public void execute_utf8BomInFirstCell_stripsBomAndImports() throws Exception {
         Path csvFile = tempDir.resolve("bom.csv");
         String bomName = "\uFEFFJordan Goh";
