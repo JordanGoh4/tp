@@ -33,7 +33,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
    * `clear` : Deletes all contacts.
-   
+
    * `sort` : Sort all contacts in alphabetical order.
 
    * `import C:\data\contacts.csv` : Imports contacts from a CSV file.
