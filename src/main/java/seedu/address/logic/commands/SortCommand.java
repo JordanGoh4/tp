@@ -29,6 +29,9 @@ public class SortCommand extends Command {
             Comparator.comparing((Person p) -> p.getName().fullName, String.CASE_INSENSITIVE_ORDER)
                     .thenComparing(p -> p.getAddress().value, String.CASE_INSENSITIVE_ORDER);
 
+    /**
+     * Enum representing the field to sort persons by.
+     */
     public enum SortField {
         ADDRESS,
         NAME
