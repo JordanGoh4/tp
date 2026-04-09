@@ -13,6 +13,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,18 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_listAndAdd_uppercase() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD.toUpperCase(Locale.ROOT)) instanceof ListCommand);
+
+        Person person = new PersonBuilder().build();
+        String addInput = PersonUtil.getAddCommand(person);
+        String uppercaseAdd = AddCommand.COMMAND_WORD.toUpperCase(Locale.ROOT)
+                + addInput.substring(AddCommand.COMMAND_WORD.length());
+        AddCommand command = (AddCommand) parser.parseCommand(uppercaseAdd);
+        assertEquals(new AddCommand(person), command);
+    }
+
+    @Test
     public void parseCommand_clear() throws Exception {
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3") instanceof ClearCommand);
@@ -75,6 +88,13 @@ public class AddressBookParserTest {
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new DeleteCommand(toList(INDEX_FIRST_PERSON)), command);
+    }
+
+    @Test
+    public void parseCommand_delete_caseInsensitive() throws Exception {
+        DeleteCommand command = (DeleteCommand) parser.parseCommand(
+                "DeLeTe " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeleteCommand(toList(INDEX_FIRST_PERSON)), command);
     }
 
