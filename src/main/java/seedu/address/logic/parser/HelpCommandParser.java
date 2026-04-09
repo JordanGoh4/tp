@@ -2,6 +2,8 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import java.util.Locale;
+
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -23,7 +25,7 @@ public class HelpCommandParser implements Parser<HelpCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
 
-        String target = tokens[0];
+        String target = tokens[0].toLowerCase(Locale.ROOT);
         if (!HelpCommand.COMMAND_USAGES.containsKey(target)) {
             throw new ParseException(String.format(
                     "Unknown command '%s'. Known commands: %s",
@@ -34,4 +36,3 @@ public class HelpCommandParser implements Parser<HelpCommand> {
         return new HelpCommand(target);
     }
 }
-

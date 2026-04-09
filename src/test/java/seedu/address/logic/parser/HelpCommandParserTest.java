@@ -25,6 +25,12 @@ public class HelpCommandParserTest {
     }
 
     @Test
+    public void parse_uppercaseCommandWord_returnsTargetedHelp() throws Exception {
+        HelpCommand command = parser.parse("LIST");
+        assertEquals(new HelpCommand("list"), command);
+    }
+
+    @Test
     public void parse_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, () -> parser.parse("unknownCmd"));
     }
