@@ -19,6 +19,8 @@ Class Email
 Class Name
 Class Phone
 Class StudentClass
+Class Remark
+Class Flag
 Class Tag
 
 Class I #FFFFFF
@@ -45,6 +47,8 @@ Person *--> Phone
 Person *--> Email
 Person *--> Address
 Person *--> StudentClass
+Person *--> Remark
+Person --> "0..1" Flag
 Person *--> "*" Tag
 
 Person -[hidden]up--> I
@@ -54,6 +58,8 @@ Name -[hidden]right-> Phone
 Phone -[hidden]right-> Address
 Address -[hidden]right-> Email
 Email -[hidden]right-> StudentClass
+StudentClass -[hidden]right-> Remark
+Remark -[hidden]right-> Flag
 
 ModelManager --> "~* filtered" Person
 @enduml

@@ -1,9 +1,9 @@
 ---
 layout: page
-title: User Guide
+title: TeacherBook CLI User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+TeacherBook CLI is a **desktop app for managing student and parent contacts, optimized for use via a Command Line Interface** (CLI) while still providing the benefits of a Graphical User Interface (GUI). If you can type fast, TeacherBook CLI can help you manage classroom contact information more efficiently than traditional GUI apps.
 
 * Table of Contents
 {:toc}
@@ -15,7 +15,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `.jar` file from the [TeacherBook CLI releases page](https://github.com/AY2526S2-CS2103-F09-3/tp/releases).
 
 1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
@@ -209,6 +209,68 @@ Examples:
 * `tag 2 t/support` Adds the tag `support` to the 2nd person's existing tags.
 * `tag 5 t/exco t/hons` Adds the tags `exco` and `hons` to the 5th person's existing tags.
 
+### Adding or clearing a remark: `remark`
+
+Adds a remark to a person, or clears the existing remark.
+
+Format: `remark INDEX r/[REMARK]`
+
+* Adds or updates the remark of the person at the specified `INDEX`.
+* You can clear a person's remark by typing `r/` followed only by spaces.
+
+Examples:
+* `remark 1 r/Allergic to peanuts` Adds a remark to the 1st person.
+* `remark 2 r/   ` Clears the remark of the 2nd person.
+
+### Flagging a person for follow-up: `flag`
+
+Flags a person with a follow-up reason.
+
+Format: `flag INDEX r/REASON`
+
+* Flags the person at the specified `INDEX`.
+* The reason is shown in the dashboard and can be removed later using `unflag`.
+
+Examples:
+* `flag 3 r/Missing consent form for field trip`
+* `flag 1 r/Parent requested a callback`
+
+### Removing a follow-up flag: `unflag`
+
+Removes an existing follow-up flag from a person.
+
+Format: `unflag INDEX`
+
+Examples:
+* `unflag 3`
+
+### Viewing flagged contacts: `dashboard`
+
+Shows a summary of all currently flagged contacts and filters the displayed list to them.
+
+Format: `dashboard`
+
+Examples:
+* `dashboard`
+
+### Undoing the previous change: `undo`
+
+Reverts the most recent command that modified the address book.
+
+Format: `undo`
+
+Examples:
+* `undo`
+
+### Redoing the previous undo: `redo`
+
+Restores the most recently undone command.
+
+Format: `redo`
+
+Examples:
+* `redo`
+
 ### Deleting person(s) : `delete`
 
 Deletes one or more specified persons from the address book.
@@ -284,17 +346,19 @@ Action | Format, Examples
 --------|------------------
 **Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/CLASS] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 c/3A t/friend t/colleague`
 **Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `delete INDEX [MORE_INDICES]`<br> e.g., `delete 3`, `delete 1 3 5`, `delete all`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/CLASS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
+**Flag** | `flag INDEX r/REASON`<br> e.g., `flag 3 r/Missing consent form`
 **Filter** | `filter c/CLASS`<br> e.g., `filter c/3A`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Import** | `import FILE_PATH`<br> e.g., `import C:\data\contacts.csv`
 **Export** | `export FILE_PATH`<br> e.g., `export C:\data\contacts.csv`
+**Dashboard** | `dashboard`
 **Remark** | `remark INDEX r/[REMARK]`<br> e.g., `remark 1 r/Allergic to peanuts`
 **Tag** | `tag INDEX t/TAG [t/MORE_TAGS]`<br> e.g., `tag 1 t/exco`
+**Unflag** | `unflag INDEX`<br> e.g., `unflag 3`
 **List** | `list`
-**Sort** | `sort`
+**Sort** | `sort [address\|name]`<br> e.g., `sort`, `sort name`
 **Undo** | `undo`
 **Redo** | `redo`
-**Sort** | `sort [address\|name]`<br> e.g., `sort`, `sort name`
 **Help** | `help`
