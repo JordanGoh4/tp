@@ -36,8 +36,6 @@ public class ImportCommand extends Command {
             + "CSV columns: name,phone,email,address[,class][,tag1;tag2;...]\n"
             + "Example: " + COMMAND_WORD + " C:\\\\data\\\\contacts.csv";
     public static final String MESSAGE_FILE_ERROR = "Unable to read CSV file: %1$s";
-    public static final String MESSAGE_IMPORT_PHONE_CONSTRAINTS =
-            "Imported phone numbers should contain exactly 8 digits.";
     public static final String MESSAGE_SUCCESS = "Import finished. Imported: %1$d, duplicates skipped: %2$d, "
             + "invalid rows skipped: %3$d.";
     private static final int MAX_SKIP_DETAILS = 10;
@@ -118,10 +116,6 @@ public class ImportCommand extends Command {
         }
 
         Name name = ParserUtil.parseName(columns.get(0));
-        String trimmedPhone = columns.get(1).trim();
-        if (!trimmedPhone.matches("\\d{8}")) {
-            throw new ParseException(MESSAGE_IMPORT_PHONE_CONSTRAINTS);
-        }
         Phone phone = ParserUtil.parsePhone(columns.get(1));
         Email email = ParserUtil.parseEmail(columns.get(2));
         Address address = ParserUtil.parseAddress(columns.get(3));

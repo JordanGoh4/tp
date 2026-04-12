@@ -18,6 +18,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Phone;
 
 public class ImportCommandTest {
 
@@ -128,7 +129,7 @@ public class ImportCommandTest {
 
         String feedback = result.getFeedbackToUser();
         assertTrue(feedback.contains("Import finished. Imported: 0, duplicates skipped: 0, invalid rows skipped: 1."));
-        assertTrue(feedback.contains(ImportCommand.MESSAGE_IMPORT_PHONE_CONSTRAINTS));
+        assertTrue(feedback.contains(Phone.MESSAGE_CONSTRAINTS));
     }
 
     @Test
