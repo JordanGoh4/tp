@@ -9,7 +9,8 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+* This project is based on the [AddressBook-Level3](https://github.com/se-edu/addressbook-level3) project created by the [SE-EDU initiative](https://se-education.org).
+* Libraries used include [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), and [JUnit 5](https://github.com/junit-team/junit5).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -233,7 +234,11 @@ Alternative 1 was chosen because it provides the most important safety net (reco
 
 ### \[Proposed\] Data archiving
 
-_{Explain here how the data archiving feature will be implemented}_
+TeacherBook CLI does not include a dedicated data-archiving feature in v1.6.
+
+At the moment, the application keeps all contacts in a single local JSON data file and supports CSV export/import for backup or archival workflows outside the app.
+
+A future version could introduce a dedicated archive command that moves inactive contacts into a separate archive file while preserving their class, tags, remarks, and follow-up flags.
 
 ### Import/Export CSV feature
 
@@ -357,44 +362,35 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 | Priority | As a … | I want to … | So that I can… |
 | :--- | :--- | :--- | :--- |
-| `* * *` | teacher | log in securely | ensure student information is protected |
-| `* * *` | teacher | add new student addresses | keep track of my students' information |
-| `* * *` | teacher | edit existing addresses | update student information when changes occur |
-| `* * *` | teacher | delete a student address | remove students who are no longer in my class |
-| `* * *` | teacher | search for student information | manage various classes efficiently |
-| `* *` | teacher | generate a filtered list of parent contacts | copy-paste multiple emails/phones at once without repetitive clicking |
-| `* *` | teacher | label students by class and cohort | have an organized view of my students |
-| `* *` | teacher | star specific students | keep an eye on students needing special attention |
-| `* *` | teacher | perform bulk operations (delete/update) by class | manage an entire class at once efficiently |
-| `* *` | teacher | select multiple students at once | apply actions without repeating steps |
-| `* *` | teacher | export student info to PDF/Excel | print or share the information if needed |
-| `* *` | teacher | import student information from PDF/Excel | avoid manual data entry |
-| `* *` | teacher | send broadcast emails to selected groups | efficiently communicate updates to students and parents |
-| `* *` | teacher | restrict access to sensitive student notes | ensure confidential info is only seen by authorized users |
-| `* *` | teacher | see communication history for each student | track past interactions |
-| `*` | teacher | detect duplicate entries during import | prevent inconsistent records |
-| `*` | teacher | preview recipient lists before broadcasting | avoid sending emails to the wrong group |
-| `*` | teacher | save frequently used contact groups | reuse them for future communications |
-| `*` | teacher | generate a summary dashboard | quickly understand workload and starred student counts |
-| `*` | teacher | receive reminders for missing contact details | ensure all records are complete and up to date |
-| `*` | teacher | schedule future broadcast messages | prepare communications in advance |
-| `*` | teacher | receive email broadcast confirmations | know that the message has been delivered |
-| `*` | teacher | restore recently deleted student records | recover information removed by mistake |
-| `*` | teacher | have the system automatically back up data | prevent loss of information due to technical issues |
-*{More to be added}*
+| `* * *` | teacher | add a new student or parent contact | keep my contact records up to date |
+| `* * *` | teacher | edit an existing contact | correct outdated information quickly |
+| `* * *` | teacher | delete a contact | remove records that are no longer relevant |
+| `* * *` | teacher | search contacts by name | find the right person quickly during lessons or meetings |
+| `* * *` | teacher | import contacts from CSV | avoid retyping large sets of contact details |
+| `* * *` | teacher | export contacts to CSV | back up or share contact data outside the app |
+| `* *` | teacher | filter contacts by class | focus on a single class at a time |
+| `* *` | teacher | sort contacts by name or address | scan the contact list more efficiently |
+| `* *` | teacher | add tags to a contact | categorize contacts using my own labels |
+| `* *` | teacher | add remarks to a contact | record extra context about a student or parent |
+| `* *` | teacher | flag a contact for follow-up | remember people who need attention later |
+| `* *` | teacher | remove a follow-up flag | mark a follow-up as completed |
+| `* *` | teacher | view all flagged contacts in one dashboard | review outstanding follow-ups quickly |
+| `* *` | teacher | undo an accidental change | recover from a recent mistake |
+| `* *` | teacher | redo a change I just undid | restore a reverted action when needed |
+| `*` | teacher | view help for a command | check the correct command format without leaving the app |
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `TeacherBook CLI` and the **Actor** is the `user`, unless specified otherwise)
 
 **Use case: Delete a person**
 
 **MSS**
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  TeacherBook CLI shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+4.  TeacherBook CLI deletes the person
 
     Use case ends.
 
@@ -406,7 +402,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index is invalid.
 
-    * 3a1. AddressBook shows an error message.
+    * 3a1. TeacherBook CLI shows an error message.
 
       Use case resumes at step 2.
 
@@ -415,7 +411,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User requests to add a new person with their contact details.
-2.  AddressBook adds the person.
+2.  TeacherBook CLI adds the person.
 
     Use case ends.
 
@@ -423,13 +419,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. The person already exists in the address book.
 
-    * 1a1. AddressBook shows an error message indicating duplicate entry.
+    * 1a1. TeacherBook CLI shows an error message indicating duplicate entry.
 
       Use case resumes at step 1.
 
 * 1b. The input format is invalid (e.g., missing required fields).
 
-    * 1b1. AddressBook shows an error message with the correct command format.
+    * 1b1. TeacherBook CLI shows an error message with the correct command format.
 
       Use case resumes at step 1.
 
@@ -437,8 +433,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to search for persons by name or tag.
-2.  AddressBook displays a filtered list of matching persons.
+1.  User requests to search for persons by name.
+2.  TeacherBook CLI displays a filtered list of matching persons.
 
     Use case ends.
 
@@ -446,13 +442,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. The search query is empty.
 
-    * 1a1. AddressBook shows an error message.
+    * 1a1. TeacherBook CLI shows an error message.
 
       Use case resumes at step 1.
 
 * 2a. No matches are found.
 
-    * 2a1. AddressBook informs the user that no results were found.
+    * 2a1. TeacherBook CLI informs the user that no results were found.
 
       Use case ends.
 
@@ -461,7 +457,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User requests to edit an existing person's details.
-2.  AddressBook updates the person's information.
+2.  TeacherBook CLI updates the person's information.
 
     Use case ends.
 
@@ -469,13 +465,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. The given index is invalid.
 
-    * 1a1. AddressBook shows an error message.
+    * 1a1. TeacherBook CLI shows an error message.
 
       Use case resumes at step 1.
 
 * 1b. The edited details conflict with an existing person (duplicate).
 
-    * 1b1. AddressBook shows an error message.
+    * 1b1. TeacherBook CLI shows an error message.
 
       Use case resumes at step 1.
 
@@ -484,7 +480,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User requests to clear all persons from the address book.
-2.  AddressBook clears all entries.
+2.  TeacherBook CLI clears all entries.
 
     Use case ends.
 
@@ -492,7 +488,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. The address book is already empty.
 
-    * 1a1. AddressBook confirms the address book is already empty.
+    * 1a1. TeacherBook CLI confirms the address book is already empty.
 
       Use case ends.
 
@@ -501,7 +497,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User requests to export the address book data to a file.
-2.  AddressBook saves the data to the specified file location.
+2.  TeacherBook CLI saves the data to the specified file location.
 
     Use case ends.
 
@@ -509,15 +505,215 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. The file path is invalid or inaccessible.
 
-    * 1a1. AddressBook shows an error message.
+    * 1a1. TeacherBook CLI shows an error message.
 
       Use case resumes at step 1.
 
 * 2a. An error occurs during export (e.g., disk full).
 
-    * 2a1. AddressBook shows an error message.
+    * 2a1. TeacherBook CLI shows an error message.
 
       Use case ends.
+
+**Use case: Import contacts from CSV**
+
+**MSS**
+
+1.  User requests to import contacts from a CSV file.
+2.  TeacherBook CLI reads the file and imports all valid, non-duplicate contacts.
+3.  TeacherBook CLI shows a summary of the import result.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The file path is invalid or the file cannot be read.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case resumes at step 1.
+
+* 2a. Some rows are invalid or duplicates.
+
+    * 2a1. TeacherBook CLI skips those rows and reports the skipped-row reasons in the result summary.
+
+      Use case resumes at step 3.
+
+**Use case: Filter persons by class**
+
+**MSS**
+
+1.  User requests to filter persons by class.
+2.  TeacherBook CLI displays only persons from the specified class.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The class input is missing or invalid.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case resumes at step 1.
+
+* 2a. No persons match the specified class.
+
+    * 2a1. TeacherBook CLI displays an empty filtered list.
+
+      Use case ends.
+
+**Use case: Sort persons**
+
+**MSS**
+
+1.  User requests to sort the displayed persons by a supported field.
+2.  TeacherBook CLI reorders the person list according to that field.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The user provides an unsupported sort field.
+
+    * 1a1. TeacherBook CLI shows an error message with the correct command format.
+
+      Use case resumes at step 1.
+
+**Use case: Add tags to a person**
+
+**MSS**
+
+1.  User requests to add one or more tags to a person.
+2.  TeacherBook CLI adds the given tags to that person's existing tags.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The given index is invalid.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case resumes at step 1.
+
+**Use case: Add or clear a remark**
+
+**MSS**
+
+1.  User requests to add or clear a remark for a person.
+2.  TeacherBook CLI updates that person's remark.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The given index is invalid or the input format is invalid.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case resumes at step 1.
+
+**Use case: Flag a person for follow-up**
+
+**MSS**
+
+1.  User requests to flag a person with a follow-up reason.
+2.  TeacherBook CLI saves the follow-up reason for that person.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The given index is invalid or the reason is missing.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case resumes at step 1.
+
+**Use case: Remove a follow-up flag**
+
+**MSS**
+
+1.  User requests to remove the follow-up flag from a person.
+2.  TeacherBook CLI removes the flag from that person.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The given index is invalid.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case resumes at step 1.
+
+**Use case: View flagged contacts in the dashboard**
+
+**MSS**
+
+1.  User requests to view the dashboard.
+2.  TeacherBook CLI shows a summary of all currently flagged contacts and filters the displayed list to them.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. There are no flagged contacts.
+
+    * 2a1. TeacherBook CLI shows an empty flagged list with a zero-count summary.
+
+      Use case ends.
+
+**Use case: Undo the previous change**
+
+**MSS**
+
+1.  User requests to undo the most recent mutating command.
+2.  TeacherBook CLI restores the address book to its previous state.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. There is no previous mutating command to undo.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case ends.
+
+**Use case: Redo the previous undo**
+
+**MSS**
+
+1.  User requests to redo the most recently undone command.
+2.  TeacherBook CLI reapplies the reverted change.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. There is no previously undone command to redo.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case ends.
+
+**Use case: View command help**
+
+**MSS**
+
+1.  User requests help for all commands or for a specific command word.
+2.  TeacherBook CLI shows the relevant help content in the help window.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The specified command word is not recognized.
+
+    * 1a1. TeacherBook CLI shows an error message.
+
+      Use case resumes at step 1.
 
 ### Non-Functional Requirements
 
@@ -527,11 +723,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4.  Contact information should be automatically saved to local storage and remain intact between sessions.
 5.  The data storage file should remain reasonably small (e.g. under 5 MB for 1000 contacts).
 6.  The system should provide clear error messages when commands are invalid.
-
-*{More to be added}*
+7.  Core contact-management features should work without an Internet connection.
+8.  Common commands such as `add`, `find`, `filter`, and `delete` should respond within a second for typical usage on an address book of up to 1000 persons.
+9.  If the data file is missing or corrupted, the application should fail gracefully without crashing at startup.
+10.  User preferences such as window size and window position should persist across sessions.
+11.  Contact data should remain on the local machine unless the user explicitly exports it.
 
 ### Glossary
 
+* **Contact**: A stored person entry representing a student or parent.
+* **Class**: The alphanumeric class label associated with a contact, such as `3A`.
+* **Tag**: A short user-defined label used to categorize a contact.
+* **Remark**: A free-form note attached to a contact.
+* **Flag**: A follow-up reason attached to a contact to indicate that further action is needed.
+* **Dashboard**: The summary view that shows all currently flagged contacts and their follow-up reasons.
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 
