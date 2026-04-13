@@ -10,6 +10,13 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.DashboardCommand;
+import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.ExportCommand;
+import seedu.address.logic.commands.FilterCommand;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -50,7 +57,7 @@ public class LogicManager implements Logic {
 
         CommandResult commandResult;
         Command command = addressBookParser.parseCommand(commandText);
-        if (!(command instanceof UndoCommand) && !(command instanceof RedoCommand)) {
+        if (isMutatingCommand(command)) {
             model.saveCurrentState();
         }
         commandResult = command.execute(model);
@@ -89,5 +96,21 @@ public class LogicManager implements Logic {
     @Override
     public void setGuiSettings(GuiSettings guiSettings) {
         model.setGuiSettings(guiSettings);
+    }
+
+    /**
+     * Returns true if the given command modifies address book data.
+     * Only mutating commands should trigger a state save for undo/redo.
+     */
+    private static boolean isMutatingCommand(Command command) {
+        return !(command instanceof UndoCommand)
+                && !(command instanceof RedoCommand)
+                && !(command instanceof HelpCommand)
+                && !(command instanceof ListCommand)
+                && !(command instanceof FindCommand)
+                && !(command instanceof FilterCommand)
+                && !(command instanceof ExportCommand)
+                && !(command instanceof DashboardCommand)
+                && !(command instanceof ExitCommand);
     }
 }

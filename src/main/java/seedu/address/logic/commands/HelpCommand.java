@@ -86,7 +86,7 @@ public class HelpCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         if (targetCommandWord.isEmpty()) {
-            return new CommandResult(HELP_SUMMARY, true, false);
+            return new CommandResult(SHOWING_HELP_MESSAGE, true, false);
         }
 
         String command = targetCommandWord.get();
