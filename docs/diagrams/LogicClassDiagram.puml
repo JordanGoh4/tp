@@ -8,7 +8,14 @@ package Logic as LogicPackage {
 
 package "Parser Classes" as ParserClasses{
 }
-Class XYZCommand
+package "Representative Commands" as ConcreteCommands {
+Class AddCommand
+Class FindCommand
+Class FlagCommand
+Class DashboardCommand
+Class ImportCommand
+Class SortCommand
+}
 Class CommandResult
 Class "{abstract}\nCommand" as Command
 
@@ -29,9 +36,19 @@ HiddenOutside ..> Logic
 
 LogicManager .right.|> Logic
 LogicManager -right->"1" ParserClasses
-ParserClasses ..> XYZCommand : <<create>>
+ParserClasses ..> AddCommand : <<create>>
+ParserClasses ..> FindCommand : <<create>>
+ParserClasses ..> FlagCommand : <<create>>
+ParserClasses ..> DashboardCommand : <<create>>
+ParserClasses ..> ImportCommand : <<create>>
+ParserClasses ..> SortCommand : <<create>>
 
-XYZCommand -up-|> Command
+AddCommand -up-|> Command
+FindCommand -up-|> Command
+FlagCommand -up-|> Command
+DashboardCommand -up-|> Command
+ImportCommand -up-|> Command
+SortCommand -up-|> Command
 LogicManager .left.> Command : <<call>>
 
 LogicManager --> Model
@@ -39,7 +56,14 @@ LogicManager --> Storage
 Storage --[hidden] Model
 Command .[hidden]up.> Storage
 Command .right.> Model
-note right of XYZCommand: XYZCommand = AddCommand, \nFindCommand, etc
+note right of ConcreteCommands
+Representative command subclasses shown here include newer features
+such as FlagCommand, DashboardCommand, ImportCommand, and SortCommand.
+Other command classes (e.g. EditCommand, DeleteCommand, FilterCommand,
+ExportCommand, TagCommand, UnflagCommand, RemarkCommand, UndoCommand,
+RedoCommand, ListCommand, ClearCommand, and HelpCommand) are omitted
+for brevity.
+end note
 
 Logic ..> CommandResult
 LogicManager .down.> CommandResult
