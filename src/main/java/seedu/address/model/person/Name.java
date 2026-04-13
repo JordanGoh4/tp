@@ -10,12 +10,14 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names may contain letters, digits, spaces, apostrophes ('), and slashes (/), and should not be blank";
+            "Names may contain letters, digits, spaces, apostrophes ('), slashes (/), hyphens (-), and periods (.),"
+                    + " and should not be blank";
 
     /*
-     * First character must not be whitespace. Allows ' (e.g. O'Brien, D'Silva) and / (e.g. s/o, d/o).
+     * First character must not be whitespace. Allows ' (e.g. O'Brien, D'Silva), / (e.g. s/o, d/o),
+     * - (e.g. Thorne-Smith), and . (e.g. J.R.).
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}'/][\\p{Alnum}'/ ]*";
+    public static final String VALIDATION_REGEX = "[\\p{Alnum}'/.-][\\p{Alnum}'/ .-]*";
 
     public final String fullName;
 

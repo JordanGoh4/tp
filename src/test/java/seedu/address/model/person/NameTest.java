@@ -38,6 +38,8 @@ public class NameTest {
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // long names
         assertTrue(Name.isValidName("John D'Silva")); // apostrophe (common in Singapore names)
         assertTrue(Name.isValidName("Ravi s/o Kumar")); // patronymic (s/o, d/o)
+        assertTrue(Name.isValidName("Courtney Thorne-Smith")); // hyphenated name
+        assertTrue(Name.isValidName("Shaquille J.R.")); // initials with periods
     }
 
     @Test
