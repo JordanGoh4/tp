@@ -5,12 +5,26 @@ skinparam arrowColor LOGIC_COLOR_T4
 skinparam classBackgroundColor LOGIC_COLOR
 
 Class "{abstract}\nCommand" as Command
-Class XYZCommand
+package "Representative Commands" as ConcreteCommands {
+Class AddCommand
+Class FindCommand
+Class FlagCommand
+Class ImportCommand
+Class TagCommand
+Class UnflagCommand
+}
 
 package "Parser classes"{
 Class "<<interface>>\nParser" as Parser
 Class AddressBookParser
-Class XYZCommandParser
+package "Representative\nCommand Parsers" as ConcreteParsers {
+Class AddCommandParser
+Class FindCommandParser
+Class FlagCommandParser
+Class ImportCommandParser
+Class TagCommandParser
+Class UnflagCommandParser
+}
 Class CliSyntax
 Class ParserUtil
 Class ArgumentMultimap
@@ -21,18 +35,49 @@ Class Prefix
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> AddressBookParser
 
-AddressBookParser .down.> XYZCommandParser: <<create>>
+AddressBookParser .down.> AddCommandParser: <<create>>
+AddressBookParser .down.> FindCommandParser: <<create>>
+AddressBookParser .down.> FlagCommandParser: <<create>>
+AddressBookParser .down.> ImportCommandParser: <<create>>
+AddressBookParser .down.> TagCommandParser: <<create>>
+AddressBookParser .down.> UnflagCommandParser: <<create>>
 
-XYZCommandParser ..> XYZCommand : <<create>>
+AddCommandParser ..> AddCommand : <<create>>
+FindCommandParser ..> FindCommand : <<create>>
+FlagCommandParser ..> FlagCommand : <<create>>
+ImportCommandParser ..> ImportCommand : <<create>>
+TagCommandParser ..> TagCommand : <<create>>
+UnflagCommandParser ..> UnflagCommand : <<create>>
 AddressBookParser ..> Command : <<use>>
-XYZCommandParser .up.|> Parser
-XYZCommandParser ..> ArgumentMultimap
-XYZCommandParser ..> ArgumentTokenizer
+AddCommandParser .up.|> Parser
+FindCommandParser .up.|> Parser
+FlagCommandParser .up.|> Parser
+ImportCommandParser .up.|> Parser
+TagCommandParser .up.|> Parser
+UnflagCommandParser .up.|> Parser
+ConcreteParsers ..> ArgumentMultimap
+ConcreteParsers ..> ArgumentTokenizer
 ArgumentTokenizer .left.> ArgumentMultimap
-XYZCommandParser ..> CliSyntax
+ConcreteParsers ..> CliSyntax
 CliSyntax ..> Prefix
-XYZCommandParser ..> ParserUtil
+ConcreteParsers ..> ParserUtil
 ParserUtil .down.> Prefix
 ArgumentTokenizer .down.> Prefix
-XYZCommand -up-|> Command
+AddCommand -up-|> Command
+FindCommand -up-|> Command
+FlagCommand -up-|> Command
+ImportCommand -up-|> Command
+TagCommand -up-|> Command
+UnflagCommand -up-|> Command
+note right of AddressBookParser
+Some simple commands are parsed directly in AddressBookParser without
+dedicated parser classes, such as dashboard, sort, list, clear,
+undo, redo, and exit.
+end note
+note right of ConcreteParsers
+Representative parser classes are shown here. Other command parsers,
+such as EditCommandParser, DeleteCommandParser, FilterCommandParser,
+ExportCommandParser, RemarkCommandParser, and HelpCommandParser, are
+omitted for brevity.
+end note
 @enduml
