@@ -37,6 +37,8 @@ public class StudentNameTest {
         assertTrue(StudentName.isValidName("peter the great")); // alphabets with spaces
         assertTrue(StudentName.isValidName("Capital Tan")); // with capital letters
         assertTrue(StudentName.isValidName("David Roger Jackson Ray Jr")); // long names
+        assertTrue(StudentName.isValidName("John D'Silva")); // apostrophe
+        assertTrue(StudentName.isValidName("Ravi s/o Kumar")); // patronymic
     }
 
     @Test

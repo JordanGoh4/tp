@@ -116,7 +116,7 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String remark} into a {@code Remark}.
-     * Leading and trailing whitespaces are preserved except for trimming once for validation.
+     * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code remark} is invalid.
      */
@@ -189,35 +189,34 @@ public class ParserUtil {
         String trimmed = indicesString.trim();
         ArrayList<Index> indices = new ArrayList<>();
 
-        if (trimmed.contains("-")) {
-            String[] parts = trimmed.split("-");
-            if (parts.length != 2) {
+        String[] parts = trimmed.split("\\s+");
+        for (String part : parts) {
+            if (!StringUtil.isNonZeroUnsignedInteger(part)) {
                 throw new ParseException(MESSAGE_INVALID_INDEX);
             }
-            if (!StringUtil.isNonZeroUnsignedInteger(parts[0].trim())
-                    || !StringUtil.isNonZeroUnsignedInteger(parts[1].trim())) {
-                throw new ParseException(MESSAGE_INVALID_INDEX);
-            }
-            int start = Integer.parseInt(parts[0].trim());
-            int end = Integer.parseInt(parts[1].trim());
-            if (start > end) {
-                throw new ParseException(MESSAGE_INVALID_INDEX);
-            }
-            for (int i = start; i <= end; i++) {
-                indices.add(Index.fromOneBased(i));
-            }
-        } else {
-
-            String[] parts = trimmed.split("\\s+");
-            for (String part : parts) {
-                if (!StringUtil.isNonZeroUnsignedInteger(part)) {
-                    throw new ParseException(MESSAGE_INVALID_INDEX);
-                }
-                indices.add(Index.fromOneBased(Integer.parseInt(part)));
-            }
+            indices.add(Index.fromOneBased(Integer.parseInt(part)));
         }
 
         return indices;
+    }
+
+    /**
+     * Parses {@code rangeString} into an inclusive start/end range of indices.
+     * @throws ParseException if the specified range is invalid
+     */
+    public static Index[] parseRange(String rangeString) throws ParseException {
+        String trimmed = rangeString.trim();
+        String[] parts = trimmed.split("-");
+        if (parts.length != 2) {
+            throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
+
+        Index start = parseIndex(parts[0]);
+        Index end = parseIndex(parts[1]);
+        if (start.getOneBased() > end.getOneBased()) {
+            throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
+        return new Index[] {start, end};
     }
 
 }

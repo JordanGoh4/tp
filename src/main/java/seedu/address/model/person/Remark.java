@@ -27,14 +27,14 @@ public class Remark {
     public Remark(String remark) {
         requireNonNull(remark);
         checkArgument(isValidRemark(remark), MESSAGE_CONSTRAINTS);
-        this.value = remark;
+        this.value = remark.trim();
     }
 
     /**
      * Returns true if a given string is a valid remark.
      */
     public static boolean isValidRemark(String test) {
-        return test != null && test.length() <= MAX_LENGTH;
+        return test != null && test.trim().length() <= MAX_LENGTH;
     }
 
     public boolean isEmpty() {

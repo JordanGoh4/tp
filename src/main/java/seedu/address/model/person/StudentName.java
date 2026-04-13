@@ -10,13 +10,12 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class StudentName {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Name should only contain letters and spaces, and it should not be blank.";
+            "Name may contain letters, spaces, apostrophes ('), and slashes (/), and it should not be blank.";
 
     /*
-     * The first character of the address must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
+     * First character must not be whitespace. Allows ' (e.g. D'Silva) and / (e.g. s/o, d/o).
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alpha}][\\p{Alpha} ]*";
+    public static final String VALIDATION_REGEX = "[\\p{Alpha}'/][\\p{Alpha}'/ ]*";
 
     public final String fullName;
 
@@ -33,7 +32,7 @@ public class StudentName {
 
     /**
      * Returns true if a given string is a valid name.
-     * - Only letters (A-Z, a-z) and spaces
+     * - Letters, spaces, apostrophes, and slashes (e.g. s/o, d/o); no digits
      * - Not blank
      * - Case-insensitive (handled elsewhere)
      */

@@ -67,6 +67,22 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void execute_validRangeUnfilteredList_success() {
+        Person firstPersonToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person secondPersonToDelete = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
+
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
+                2, firstPersonToDelete.getName() + ", " + secondPersonToDelete.getName());
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(firstPersonToDelete);
+        expectedModel.deletePerson(secondPersonToDelete);
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         DeleteCommand deleteCommand = new DeleteCommand(toList(outOfBoundIndex));
@@ -80,6 +96,16 @@ public class DeleteCommandTest {
     public void execute_someInvalidIndicesUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         DeleteCommand deleteCommand = new DeleteCommand(toList(INDEX_FIRST_PERSON, outOfBoundIndex));
+
+        assertCommandFailure(deleteCommand, model, String.format(
+                DeleteCommand.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX_SPECIFIC,
+                outOfBoundIndex.getOneBased()));
+    }
+
+    @Test
+    public void execute_invalidLargeRangeUnfilteredList_throwsCommandException() {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1000);
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
 
         assertCommandFailure(deleteCommand, model, String.format(
                 DeleteCommand.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX_SPECIFIC,
@@ -144,6 +170,7 @@ public class DeleteCommandTest {
     public void equals() {
         DeleteCommand deleteFirstCommand = new DeleteCommand(toList(INDEX_FIRST_PERSON));
         DeleteCommand deleteSecondCommand = new DeleteCommand(toList(INDEX_SECOND_PERSON));
+        DeleteCommand deleteRangeCommand = new DeleteCommand(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
 
         // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
@@ -160,6 +187,9 @@ public class DeleteCommandTest {
 
         // different person -> returns false
         assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
+
+        // different delete mode -> returns false
+        assertFalse(deleteFirstCommand.equals(deleteRangeCommand));
     }
 
     @Test

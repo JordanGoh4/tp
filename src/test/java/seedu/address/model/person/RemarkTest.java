@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -34,7 +35,14 @@ public class RemarkTest {
     public void isEmpty() {
         assertTrue(Remark.EMPTY.isEmpty());
         assertTrue(new Remark("").isEmpty());
+        assertTrue(new Remark("   ").isEmpty());
         assertFalse(new Remark("x").isEmpty());
+    }
+
+    @Test
+    public void constructor_trimsWhitespace() {
+        assertEquals("Important note", new Remark("   Important note").value);
+        assertEquals(new Remark("Important note"), new Remark("   Important note   "));
     }
 
     @Test

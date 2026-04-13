@@ -46,8 +46,13 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validRange_returnsDeleteCommand() {
-        assertParseSuccess(parser, "1-3",
-                new DeleteCommand(toList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON)));
+        assertParseSuccess(parser, "1-3", new DeleteCommand(INDEX_FIRST_PERSON, INDEX_THIRD_PERSON));
+    }
+
+    @Test
+    public void parse_veryLargeRange_returnsDeleteCommandWithoutExpandingRange() {
+        assertParseSuccess(parser, "1-1000000000",
+                new DeleteCommand(Index.fromOneBased(1), Index.fromOneBased(1000000000)));
     }
 
     @Test
