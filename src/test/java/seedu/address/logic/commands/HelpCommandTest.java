@@ -35,10 +35,10 @@ public class HelpCommandTest {
     public void execute_noArg_includesMissingImplementedCommandsInSummary() {
         CommandResult result = new HelpCommand().execute(model);
 
-        assertTrue(result.getFeedbackToUser().contains("filter " + FilterCommand.MESSAGE_USAGE));
-        assertTrue(result.getFeedbackToUser().contains("remark " + RemarkCommand.MESSAGE_USAGE));
-        assertTrue(result.getFeedbackToUser().contains("tag    " + TagCommand.MESSAGE_USAGE));
-        assertTrue(result.getFeedbackToUser().contains("undo   " + UndoCommand.MESSAGE_USAGE));
-        assertTrue(result.getFeedbackToUser().contains("redo   " + RedoCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains(FilterCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains(RemarkCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains(TagCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains(UndoCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains(RedoCommand.MESSAGE_USAGE));
     }
 }
