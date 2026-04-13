@@ -680,6 +680,21 @@ testers are expected to do more *exploratory* testing.
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Test case: delete `data/addressbook.json` before launching the app.<br>
+      Expected: The app still starts successfully and shows the sample contacts because no saved address book was found.
 
-1. _{ more test cases …​ }_
+   1. Test case: replace the contents of `data/addressbook.json` with invalid JSON such as `{ invalid json ]`, then launch the app.<br>
+      Expected: The app still starts successfully with an empty address book because the saved data could not be loaded.
+
+   1. Test case: keep `data/addressbook.json` as valid JSON syntax but change a field to an invalid value (e.g. an invalid email), then launch the app.<br>
+      Expected: The app still starts successfully with an empty address book because the saved data contains illegal values.
+
+1. Persisting changes to disk
+
+   1. Prerequisites: Launch the app from a clean test folder.
+
+   1. Test case: run `add n/Test User p/12345678 e/test@example.com a/123 Test St` and close the app.<br>
+      Expected: `data/addressbook.json` is created or updated, and the added contact is present after relaunching the app.
+
+   1. Test case: run `delete 1` or `clear`, close the app, and relaunch the app.<br>
+      Expected: The deletion is preserved after relaunch because data-changing commands are saved automatically.
