@@ -520,7 +520,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 2a. No matches are found.
 
-    * 2a1. TeacherBook CLI informs the user that no results were found.
+    * 2a1. TeacherBook CLI shows an empty filtered list and a zero-count result message.
 
       Use case ends.
 
@@ -774,16 +774,22 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests help for all commands or for a specific command word.
-2.  TeacherBook CLI shows the relevant help content in the help window.
+1.  User requests help for all commands.
+2.  TeacherBook CLI opens the help window and shows the full command summary.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. The specified command word is not recognized.
+* 1a. The user requests help for a specific command word.
 
-    * 1a1. TeacherBook CLI shows an error message.
+    * 1a1. TeacherBook CLI shows the usage for that command in the result display.
+
+      Use case ends.
+
+* 1b. The specified command word is not recognized.
+
+    * 1b1. TeacherBook CLI shows an error message.
 
       Use case resumes at step 1.
 
@@ -898,6 +904,36 @@ testers are expected to do more *exploratory* testing.
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
+### Adding a person
+
+1. Adding a valid contact
+
+   1. Prerequisites: The contact does not already exist in the address book.
+
+   1. Test case: `add n/Test User p/91234567 e/test@example.com a/123 Test Street`<br>
+      Expected: A new contact is added to the list. Status message shows the new person's details.
+
+   1. Test case: Repeat the same `add` command again<br>
+      Expected: No duplicate is created. Error message shows that the person already exists.
+
+   1. Test case: `add n/Test User p/abc e/test@example.com a/123 Test Street`<br>
+      Expected: No person is added. Error details shown in the status message.
+
+### Editing a person
+
+1. Editing an existing contact
+
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+   1. Test case: `edit 1 p/90000000`<br>
+      Expected: The 1st contact's phone is updated. Status message shows the edited person's details.
+
+   1. Test case: `edit 1 t/friend`<br>
+      Expected: The 1st contact's tag set is replaced with `friend`.
+
+   1. Test case: `edit 0 p/90000000` and `edit 1`<br>
+      Expected: No contact is edited. Error details shown in the status message.
+
 ### Tagging a person
 
 1. Cumulatively adding tags to an existing person
@@ -915,6 +951,24 @@ testers are expected to do more *exploratory* testing.
 
    1. Test case: `tag 0 t/friend` and `tag 1`<br>
       Expected: No tag is added. Error details shown in the status message.
+
+### Finding contacts by name
+
+1. Finding contacts using name keywords
+
+   1. Prerequisites: At least two contacts exist whose names contain different searchable words.
+
+   1. Test case: `find Alex`<br>
+      Expected: Only contacts whose names contain the whole-word keyword `Alex` are shown. Status message shows the number of persons listed.
+
+   1. Test case: `find alex`<br>
+      Expected: Same result as `find Alex` because keyword matching is case-insensitive.
+
+   1. Test case: `find NoSuchPerson`<br>
+      Expected: An empty filtered list is shown. Status message shows `0 persons listed!`.
+
+   1. Test case: `find`<br>
+      Expected: No search is performed. Error details shown in the status message.
 
 ### Adding/clearing a remark
 
@@ -1049,6 +1103,25 @@ testers are expected to do more *exploratory* testing.
 
    1. Test case: `dashboard` when no contacts are flagged<br>
       Expected: An empty list is shown, and the result box reports zero flagged contacts.
+
+### Listing and clearing contacts
+
+1. Listing all contacts
+
+   1. Prerequisites: The list is currently filtered by another command such as `find`, `filter`, or `dashboard`.
+
+   1. Test case: `list`<br>
+      Expected: The full contact list is shown again. Status message shows `Listed all persons`.
+
+1. Clearing all contacts
+
+   1. Prerequisites: At least one contact exists in the address book.
+
+   1. Test case: `clear`<br>
+      Expected: All contacts are removed from the address book. Status message shows `Address book has been cleared!`.
+
+   1. Test case: `clear extraText`<br>
+      Expected: Same result as `clear`, because extra parameters are ignored for this command.
 
 ### Undoing and redoing a command
 
