@@ -9,8 +9,6 @@ TeacherBook CLI is a **desktop app for managing student and parent contacts, opt
 
 **What problem does it solve?** Teachers often juggle contact information across spreadsheets, physical records, and school systems. TeacherBook CLI centralises this into a single searchable, filterable, and exportable contact book — with features like class-based filtering, student flagging for follow-ups, and CSV import/export to integrate with existing school workflows.
 
-* Table of Contents
-{:toc}
 ## Table of contents {#table-of-contents}
 
 * [Quick start](#quick-start)
