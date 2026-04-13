@@ -160,9 +160,10 @@ Format: `sort [address|name]`
 
 Imports contacts from a CSV file.
 
-Format: `import FILE_PATH` (absolute path)
+Format: `import FILE_PATH`
 
-* `FILE_PATH` is the location and name of the CSV file to import from (e.g. `data\contacts.csv`).
+* `FILE_PATH` is the location and name of the CSV file to import from.
+* Both relative paths (e.g. `data\contacts.csv`) and absolute paths (e.g. `C:\data\contacts.csv`) are accepted.
 
 CSV row format:
 `name,phone,email,address[,class][,tag1;tag2;...]`
@@ -180,7 +181,6 @@ Notes:
 * Duplicate contacts (same name) are skipped.
 * Up to 10 skipped-row reasons are shown after import.
 * Addresses containing commas should be wrapped in double quotes.
-* `FILE_PATH` must be an absolute file path (e.g. `C:\data\contacts.csv`).
 * Known limitation: because header detection checks only the first cell, a first data row starting with `name` (e.g. `name,91234567,user@example.com,...`) may be treated as a header and skipped without a row-specific reason.
 * Tags are optional and should be separated with semicolons (`;`).
 
@@ -192,12 +192,12 @@ Examples:
 
 Exports all contacts from the address book to a CSV file.
 
-Format: `export FILE_PATH` (absolute path)
+Format: `export FILE_PATH`
 
-* `FILE_PATH` is the location and name of the file to save to (e.g. `data\contacts.csv`).
+* `FILE_PATH` is the location and name of the file to save to.
+* Both relative paths (e.g. `data\contacts.csv`) and absolute paths (e.g. `C:\data\contacts.csv`) are accepted.
 
 Notes:
-* `FILE_PATH` must be an absolute file path (e.g. `C:\data\contacts.csv`).
 * The command writes a CSV header: `name,phone,email,address,class,tags`.
 * If needed, parent folders in the given file path are created automatically.
 * Existing files at the same file path will be overwritten.
