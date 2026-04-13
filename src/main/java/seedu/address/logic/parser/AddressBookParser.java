@@ -90,6 +90,9 @@ public class AddressBookParser {
             return new ListCommand();
 
         case DashboardCommand.COMMAND_WORD:
+            if (!arguments.trim().isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DashboardCommand.MESSAGE_USAGE));
+            }
             return new DashboardCommand();
 
         case RemarkCommand.COMMAND_WORD:

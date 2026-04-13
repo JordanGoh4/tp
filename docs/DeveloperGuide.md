@@ -9,8 +9,7 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* This project is based on the [AddressBook-Level3 (AB3)](https://github.com/se-edu/addressbook-level3) project created by the [SE-EDU initiative](https://se-education.org).
-* Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://github.com/junit-team/junit5)
+* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -174,11 +173,11 @@ These are exposed in the `Model` interface as:
 * `Model#canRedoAddressBook()` -- Returns true if there is a saved redo state.
 * `Model#redoAddressBook()` -- Restores the address book to the state before the most recent undo.
 
-The snapshot saving is handled in `LogicManager#execute()`, which calls `Model#saveCurrentState()` only before executing a mutating command. Read-only commands (`help`, `list`, `find`, `filter`, `export`, `dashboard`, `exit`) and undo/redo themselves are excluded via the `isMutatingCommand()` helper so that they do not overwrite the saved snapshot:
+The snapshot saving is handled in `LogicManager#execute()`, which calls `Model#saveCurrentState()` before executing any mutating command. Non-mutating commands (`undo` and `redo`) are excluded using an `instanceof` check:
 
 ```java
 Command command = addressBookParser.parseCommand(commandText);
-if (isMutatingCommand(command)) {
+if (!(command instanceof UndoCommand) && !(command instanceof RedoCommand)) {
     model.saveCurrentState();
 }
 commandResult = command.execute(model);
@@ -323,62 +322,6 @@ Sorting is implemented using a single command:
    * Expected: persons are sorted by name.
 4. Run `sort invalidField`.
    * Expected: invalid command format error with sort usage.
-
-### Flag, Unflag, and Dashboard feature
-
-#### Implementation
-
-The flag/unflag/dashboard feature allows teachers to mark students who need follow-up and view a consolidated summary. It is implemented using three commands:
-
-* `FlagCommand` + `FlagCommandParser` — marks a person as flagged with a required reason (via `r/REASON`).
-* `UnflagCommand` + `UnflagCommandParser` — removes the flag from a person.
-* `DashboardCommand` — filters the person list to show only flagged persons and displays a formatted summary.
-
-Each `Person` has an optional `Flag` field. When a person is flagged, the `Flag` object stores the reason string. The `FlaggedPersonsPredicate` is used by `DashboardCommand` to filter the displayed list to only flagged contacts.
-
-Flagging and unflagging are mutating commands (they modify person data), so they are compatible with the undo/redo system. `DashboardCommand` is read-only (it only filters the view) and does not affect undo state.
-
-#### Design considerations
-
-* **Separate flag/unflag commands:** Using distinct commands (rather than a toggle) makes the intent explicit and avoids accidental unflagging.
-* **Reason required for flag:** Requiring a reason ensures the dashboard summary is useful — teachers can see at a glance *why* each student needs attention.
-* **Dashboard as a filter:** The dashboard command reuses the existing filtered list mechanism, so the UI updates naturally without a separate view.
-
-#### Manual testing
-
-1. Flag a person with a reason.
-   * Run: `flag 1 r/Missing consent form`
-   * Expected: The 1st person is flagged. A visual indicator appears on their card. Status message confirms the flag.
-
-2. Flag a person who is already flagged.
-   * Run: `flag 1 r/New reason`
-   * Expected: The flag reason is updated to the new reason.
-
-3. Flag without a reason.
-   * Run: `flag 1` or `flag 1 r/`
-   * Expected: Error message indicating a reason must be provided.
-
-4. Unflag a flagged person.
-   * Run: `unflag 1`
-   * Expected: The flag is removed. The visual indicator disappears. Status message confirms the unflag.
-
-5. Unflag a person who is not flagged.
-   * Run: `unflag 1` (on an unflagged person)
-   * Expected: Error message indicating the person is not flagged.
-
-6. View the dashboard.
-   * Prerequisites: At least one person is flagged.
-   * Run: `dashboard`
-   * Expected: The person list filters to show only flagged persons. The result display shows a formatted summary with each flagged person's name and reason.
-
-7. View the dashboard with no flagged persons.
-   * Prerequisites: No persons are flagged.
-   * Run: `dashboard`
-   * Expected: An empty list is displayed. The summary shows 0 flagged contacts.
-
-8. Undo a flag operation.
-   * Run: `flag 1 r/test` then `undo`
-   * Expected: The flag is removed (reverted to the pre-flag state).
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -590,12 +533,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
-* **Class**: A student's school class or cohort (e.g. 3A, 4B). Used to group and filter contacts.
-* **Tag**: A short label attached to a contact for categorisation (e.g. `friend`, `exco`). A contact can have multiple tags.
-* **Remark**: A free-text note attached to a contact for recording non-structured information (e.g. medical alerts, pickup arrangements).
-* **Flag**: A marker on a contact indicating the student requires follow-up, accompanied by a reason (e.g. missing consent form).
-* **Dashboard**: A summary view showing all currently flagged contacts and their reasons.
-* **CSV**: Comma-Separated Values, a plain-text file format used for importing and exporting contact data.
 
 --------------------------------------------------------------------------------------------------------------------
 

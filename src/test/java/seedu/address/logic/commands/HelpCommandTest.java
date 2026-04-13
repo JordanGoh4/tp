@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,18 @@ public class HelpCommandTest {
 
     @Test
     public void execute_noArg_showsHelpWindow() {
-        CommandResult expectedCommandResult = new CommandResult(HelpCommand.SHOWING_HELP_MESSAGE, true, false);
+        CommandResult expectedCommandResult = new CommandResult(HelpCommand.HELP_SUMMARY, true, false);
         assertCommandSuccess(new HelpCommand(), model, expectedCommandResult, expectedModel);
+    }
+
+    @Test
+    public void execute_noArg_includesMissingImplementedCommandsInSummary() {
+        CommandResult result = new HelpCommand().execute(model);
+
+        assertTrue(result.getFeedbackToUser().contains("filter " + FilterCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains("remark " + RemarkCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains("tag    " + TagCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains("undo   " + UndoCommand.MESSAGE_USAGE));
+        assertTrue(result.getFeedbackToUser().contains("redo   " + RedoCommand.MESSAGE_USAGE));
     }
 }
