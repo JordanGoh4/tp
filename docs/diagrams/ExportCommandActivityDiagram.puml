@@ -1,0 +1,31 @@
+@startuml
+!include style.puml
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor LOGIC_COLOR
+  BorderColor LOGIC_COLOR_T4
+  FontColor #FFFFFF
+  DiamondBackgroundColor LOGIC_COLOR_T2
+  DiamondBorderColor LOGIC_COLOR_T4
+  ArrowColor LOGIC_COLOR_T4
+  StartColor LOGIC_COLOR_T3
+  EndColor LOGIC_COLOR_T3
+}
+
+start
+:User runs `export FILE_PATH`;
+:ExportCommand gets all persons from the address book;
+:Convert each person to a CSV row;
+:Insert the CSV header row;
+if (parent directory exists?) then (yes)
+else (no)
+  :Create parent directories;
+endif
+if (CSV file writable?) then (yes)
+  :Write all rows to the target file;
+  :Return success message with file path;
+else (no)
+  :Throw file-write CommandException;
+endif
+stop
+@enduml

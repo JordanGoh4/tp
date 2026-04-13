@@ -251,6 +251,12 @@ The import/export feature is implemented in the `Logic` component using two comm
 
 Both commands are routed in `AddressBookParser` and executed by `LogicManager`, after which the normal autosave pipeline persists the updated `AddressBook` state.
 
+The activity diagrams below summarize the main control flow for the `import` and `export` commands.
+
+![Import command activity](images/ImportCommandActivityDiagram.png)
+
+![Export command activity](images/ExportCommandActivityDiagram.png)
+
 **Import (`import FILE_PATH`)**
 
 * Reads the CSV file line by line.
@@ -312,6 +318,10 @@ Sorting is implemented using a single command:
 
 `SortCommand` then selects the corresponding comparator and calls `Model#sortPersonList(...)`.
 
+The activity diagram below summarizes how `sort` chooses the requested field and applies the corresponding comparator.
+
+![Sort command activity](images/SortCommandActivityDiagram.png)
+
 #### Design considerations
 
 * **Single-command design:** using one command with a field parameter avoids duplicate command classes for each sort mode.
@@ -342,6 +352,12 @@ The flag/unflag/dashboard feature allows teachers to mark students who need foll
 Each `Person` has an optional `Flag` field. When a person is flagged, the `Flag` object stores the reason string. The `FlaggedPersonsPredicate` is used by `DashboardCommand` to filter the displayed list to only flagged contacts.
 
 Flagging and unflagging are mutating commands (they modify person data), so they are compatible with the undo/redo system. `DashboardCommand` is read-only (it only filters the view) and does not affect undo state.
+
+The activity diagrams below summarize the main command flow for `flag` and `dashboard`.
+
+![Flag command activity](images/FlagCommandActivityDiagram.png)
+
+![Dashboard command activity](images/DashboardCommandActivityDiagram.png)
 
 #### Design considerations
 

@@ -1,0 +1,32 @@
+@startuml
+!include style.puml
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor LOGIC_COLOR
+  BorderColor LOGIC_COLOR_T4
+  FontColor #FFFFFF
+  DiamondBackgroundColor LOGIC_COLOR_T2
+  DiamondBorderColor LOGIC_COLOR_T4
+  ArrowColor LOGIC_COLOR_T4
+  StartColor LOGIC_COLOR_T3
+  EndColor LOGIC_COLOR_T3
+}
+
+start
+:User runs `sort [FIELD]`;
+:AddressBookParser parses the optional sort field;
+if (FIELD = `name`?) then (yes)
+  :Construct `SortCommand(NAME)`;
+  :Sort with the name comparator;
+  :Return `Sorted all persons by name`;
+else (no)
+  if (FIELD empty or `address`?) then (yes)
+    :Construct `SortCommand(ADDRESS)`;
+    :Sort with the address comparator;
+    :Return `Sorted all persons by address`;
+  else (invalid)
+    :Show invalid command format error;
+  endif
+endif
+stop
+@enduml

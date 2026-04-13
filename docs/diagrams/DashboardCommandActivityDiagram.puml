@@ -1,0 +1,26 @@
+@startuml
+!include style.puml
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor LOGIC_COLOR
+  BorderColor LOGIC_COLOR_T4
+  FontColor #FFFFFF
+  DiamondBackgroundColor LOGIC_COLOR_T2
+  DiamondBorderColor LOGIC_COLOR_T4
+  ArrowColor LOGIC_COLOR_T4
+  StartColor LOGIC_COLOR_T3
+  EndColor LOGIC_COLOR_T3
+}
+
+start
+:User runs `dashboard`;
+:DashboardCommand updates the filtered list using `FlaggedPersonsPredicate`;
+:Read all flagged persons from the filtered list;
+if (any flagged persons?) then (yes)
+  :Build the flagged-contacts summary with names,\nclass labels, phones, and reasons;
+else (no)
+  :Build the zero-count dashboard summary;
+endif
+:Return the dashboard summary as the command result;
+stop
+@enduml

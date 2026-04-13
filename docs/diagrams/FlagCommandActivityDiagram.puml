@@ -1,0 +1,27 @@
+@startuml
+!include style.puml
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor LOGIC_COLOR
+  BorderColor LOGIC_COLOR_T4
+  FontColor #FFFFFF
+  DiamondBackgroundColor LOGIC_COLOR_T2
+  DiamondBorderColor LOGIC_COLOR_T4
+  ArrowColor LOGIC_COLOR_T4
+  StartColor LOGIC_COLOR_T3
+  EndColor LOGIC_COLOR_T3
+}
+
+start
+:User runs `flag INDEX r/REASON`;
+:FlagCommand validates the displayed index;
+if (index valid?) then (yes)
+  :Create an updated Person with the new Flag reason;
+  :model.setPerson(oldPerson, flaggedPerson);
+  :Reset filtered list to show all persons;
+  :Return success message for the flagged person;
+else (no)
+  :Show invalid displayed-index error;
+endif
+stop
+@enduml

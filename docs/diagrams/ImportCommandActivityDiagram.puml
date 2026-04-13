@@ -1,0 +1,36 @@
+@startuml
+!include style.puml
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor LOGIC_COLOR
+  BorderColor LOGIC_COLOR_T4
+  FontColor #FFFFFF
+  DiamondBackgroundColor LOGIC_COLOR_T2
+  DiamondBorderColor LOGIC_COLOR_T4
+  ArrowColor LOGIC_COLOR_T4
+  StartColor LOGIC_COLOR_T3
+  EndColor LOGIC_COLOR_T3
+}
+
+start
+:User runs `import FILE_PATH`;
+:ImportCommand reads all CSV lines;
+if (CSV file readable?) then (yes)
+  while (more lines?)
+    :Trim line and remove UTF-8 BOM if needed;
+    if (blank line or header row?) then (skip)
+    else (process)
+      :Parse row into a Person;
+      if (valid and non-duplicate?) then (yes)
+        :model.addPerson(person);
+      else (no)
+        :Record duplicate or invalid-row detail;
+      endif
+    endif
+  endwhile
+  :Return import summary with skip details;
+else (no)
+  :Throw file-read CommandException;
+endif
+stop
+@enduml
