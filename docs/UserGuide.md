@@ -119,30 +119,35 @@ Format: `sort [address|name]`
 
 Imports persons from a CSV file.
 
-Format: `import FILE_PATH`
+Format: `import FILE_PATH` (absolute path)
 
 CSV row format:
 `name,phone,email,address[,class][,tag1;tag2;...]`
 
+CSV import rules:
+* Encoding: UTF-8 CSV is expected. A UTF-8 BOM at the start of the first value is detected and handled automatically.
+* Header detection: the first row is treated as a header only if the first cell is `name` (case-insensitive), and that row is ignored.
+* Duplicate detection: duplicates are detected by `name` only (not by all fields).
+* Skip feedback: invalid/duplicate rows are skipped, and up to 10 skipped-row reasons are shown after import.
+* Quoting: values containing commas should be wrapped in double quotes.
+
 Notes:
-* The first row can be a header (e.g. `name,phone,email,address,class,tags`) and it will be ignored.
-* Rows with invalid data are skipped.
-* Duplicate persons (same name) are skipped.
-* Up to 10 skipped-row reasons are shown after import.
-* Addresses containing commas should be wrapped in double quotes.
+* `FILE_PATH` must be an absolute file path (e.g. `C:\data\contacts.csv`).
+* Known limitation: because header detection checks only the first cell, a first data row starting with `name` (e.g. `name,91234567,user@example.com,...`) may be treated as a header and skipped without a row-specific reason.
 * Tags are optional and should be separated with semicolons (`;`).
 
 Examples:
 * `import C:\data\contacts.csv`
-* `import data\new_contacts.csv`
+* `import C:\Users\Alex\Downloads\new_contacts.csv`
 
 ### Exporting persons to CSV : `export`
 
 Exports all persons from the address book to a CSV file.
 
-Format: `export FILE_PATH`
+Format: `export FILE_PATH` (absolute path)
 
 Notes:
+* `FILE_PATH` must be an absolute file path (e.g. `C:\data\contacts.csv`).
 * The command writes a CSV header: `name,phone,email,address,class,tags`.
 * If needed, parent folders in the given path are created automatically.
 * Existing files at the same path will be overwritten.
@@ -150,7 +155,7 @@ Notes:
 
 Examples:
 * `export C:\data\contacts.csv`
-* `export data\backup\contacts.csv`
+* `export C:\Users\Alex\Desktop\backup\contacts.csv`
 
 ### Editing a person : `edit`
 
@@ -340,6 +345,7 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. **During CSV import, header detection can be over-aggressive**. If the first row begins with `name`, the app may assume it is a header row and skip it without showing a row-level skip reason.
 
 --------------------------------------------------------------------------------------------------------------------
 

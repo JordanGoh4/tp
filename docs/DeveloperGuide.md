@@ -251,6 +251,7 @@ Both commands are routed in `AddressBookParser` and executed by `LogicManager`, 
 * Reads the CSV file line by line.
 * Supports quoted CSV values (including commas in addresses).
 * Ignores a header row if the first cell is `name`.
+* Known limitation: the header detection is currently string-based. If the first data row starts with `name`, that row can be skipped as a header without a row-level skip reason.
 * Converts each row into a `Person` using existing parser utilities (`ParserUtil`) so field validation remains consistent with `add`.
 * Duplicate detection uses `Model#hasPerson`, which relies on identity (`Person#isSamePerson`), i.e. same name.
 * Invalid or duplicate rows are skipped and summarized in the command result.
@@ -533,6 +534,28 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+This appendix tracks known feature flaws that are intentionally not fixed in v1.6, together with proposed near-term fixes.
+
+1. **Improve import header detection**
+   * **Current flaw:** `import` treats a row as header when the first cell is `name`, which can wrongly skip a legitimate first contact named `name` and omit a row-level reason.
+   * **Planned fix:** Detect headers using full-column matching (e.g. `name,phone,email,address`) instead of first-cell matching, and when uncertain, process the row as data and report explicit validation errors.
+
+2. **Support explicit header control for import**
+   * **Current flaw:** Users cannot override automatic header detection when importing CSV files with uncommon first rows.
+   * **Planned fix:** Add optional flags such as `import --has-header FILE_PATH` and `import --no-header FILE_PATH` to make behavior explicit and predictable.
+
+3. **Make import skip reasons fully transparent**
+   * **Current flaw:** Some skipped-row scenarios (such as mistaken header detection) do not produce row-specific reasons in feedback.
+   * **Planned fix:** Route every skip path through a unified reason-reporting mechanism so each skipped row has a concrete, user-visible explanation.
+
+4. **Support exporting filtered subsets**
+   * **Current flaw:** `export` always writes the full contact list, even when users need only a subset (e.g. current filtered view, class-specific contacts, or tagged contacts).
+   * **Planned fix:** Add export modes/flags to export selected subsets, such as `export --filtered FILE_PATH` (current displayed list) and `export --class CLASS FILE_PATH`, while keeping full-list export as the default behavior.
 
 --------------------------------------------------------------------------------------------------------------------
 
